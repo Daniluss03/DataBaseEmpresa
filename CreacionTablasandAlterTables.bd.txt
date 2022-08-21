@@ -1,0 +1,207 @@
+-- Database: Proyecto_Final
+
+-- DROP DATABASE IF EXISTS "Proyecto_Final";
+
+CREATE DATABASE "Proyecto_Final"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_United States.1252'
+    LC_CTYPE = 'English_United States.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
+	-- Create schemas
+
+-- Create tables
+CREATE TABLE IF NOT EXISTS Clientes
+(
+    id INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Apellido VARCHAR(25),
+    correo VARCHAR(25),
+    Edad INTEGER,
+    Sexo VARCHAR(25),
+    PRIMARY KEY(id)
+);
+
+-- Create tables
+CREATE TABLE IF NOT EXISTS Auditoria
+(
+    id INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Apellido VARCHAR(25),
+    correo VARCHAR(25),
+    Edad INTEGER,
+    Sexo VARCHAR(25),
+  
+);
+
+CREATE TABLE IF NOT EXISTS Auditoria_Empleado
+(
+    Codigo_Empleado INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Apellido VARCHAR(25),
+    identificacion VARCHAR(25),
+    correo VARCHAR(25),
+    Codigo INTEGER,
+    Telefono VARCHAR(25),
+    Sexo VARCHAR(25)
+   
+);
+
+CREATE TABLE IF NOT EXISTS Producto
+(
+    Codigo_producto INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Fecha_Expedicion DATE,
+    Fecha_Vencimiento DATE,
+    Precio DOUBLE PRECISION,
+    Codigo INTEGER,
+    PRIMARY KEY(Codigo_producto)
+);
+
+CREATE TABLE IF NOT EXISTS Pedidos
+(
+    Codigo_pedido INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Fecha VARCHAR(25),
+    Hora DOUBLE PRECISION,
+    Destino VARCHAR(25),
+    Direccion VARCHAR(25),
+    Valor DOUBLE PRECISION,
+    PRIMARY KEY(Codigo_pedido)
+);
+
+CREATE TABLE IF NOT EXISTS Distribudor
+(
+    id VARCHAR(25) NOT NULL,
+    Nombre VARCHAR(25),
+    Apellido VARCHAR(25),
+    identificacion VARCHAR(25),
+    correo VARCHAR(25),
+    Sexo VARCHAR(25),
+    Telefono VARCHAR(25),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS Empleado
+(
+    Codigo_Empleado INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Apellido VARCHAR(25),
+    identificacion VARCHAR(25),
+    correo VARCHAR(25),
+    Codigo INTEGER,
+    Telefono VARCHAR(25),
+    Sexo VARCHAR(25),
+    PRIMARY KEY(Codigo_Empleado)
+);
+
+CREATE TABLE IF NOT EXISTS Vehiculo
+(
+    Codigo INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Apellido VARCHAR(25),
+    identificacion VARCHAR(25),
+    correo VARCHAR(25),
+    Tipo_vehiculo VARCHAR(25),
+    placa VARCHAR(25),
+    PRIMARY KEY(Codigo)
+);
+
+CREATE TABLE IF NOT EXISTS Productos_Distribudor
+(
+    id VARCHAR(25) NOT NULL,
+    Codigo_producto INTEGER NOT NULL    
+);
+
+CREATE TABLE IF NOT EXISTS Pedidos_Clientes
+(
+    id INTEGER NOT NULL,
+    Codigo_pedido INTEGER NOT NULL    
+);
+
+CREATE TABLE IF NOT EXISTS Empleado_Pedidos
+(
+    Codigo_pedido_Uno INTEGER NOT NULL,
+    Codigo_Empleado_Uno INTEGER NOT NULL    
+);
+
+CREATE TABLE IF NOT EXISTS Punto_De_Venta
+(
+    Codigo_Punto_Venta INTEGER NOT NULL,
+    Nombre VARCHAR(25),
+    Direcccion VARCHAR(25),
+    Correo VARCHAR(25),
+    Codigo_Empleado INTEGER,
+    PRIMARY KEY(Codigo_Punto_Venta)
+);
+
+CREATE TABLE IF NOT EXISTS Productos_Distribudor2
+(
+    id_distribudor_uno VARCHAR(25) NOT NULL,
+    Codigo_Punto_Venta_Uno INTEGER NOT NULL    
+);
+
+
+-- Create FKs
+ALTER TABLE Empleado
+    ADD    FOREIGN KEY (Codigo)
+    REFERENCES Vehiculo(Codigo)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Pedidos_Clientes
+    ADD    FOREIGN KEY (id)
+    REFERENCES Clientes(id)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Pedidos_Clientes
+    ADD    FOREIGN KEY (Codigo_pedido)
+    REFERENCES Pedidos(Codigo_pedido)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Punto_De_Venta
+    ADD    FOREIGN KEY (Codigo_Empleado)
+    REFERENCES Empleado(Codigo_Empleado)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Productos_Distribudor2
+    ADD    FOREIGN KEY (id_distribudor_uno)
+    REFERENCES Distribudor(id)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Productos_Distribudor2
+    ADD    FOREIGN KEY (Codigo_Punto_Venta_Uno)
+    REFERENCES Punto_De_Venta(Codigo_Punto_Venta)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Productos_Distribudor
+    ADD    FOREIGN KEY (id)
+    REFERENCES Distribudor(id)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Productos_Distribudor
+    ADD    FOREIGN KEY (Codigo_producto)
+    REFERENCES Producto(Codigo_producto)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Empleado_Pedidos
+    ADD    FOREIGN KEY (Codigo_Empleado_Uno)
+    REFERENCES Empleado(Codigo_Empleado)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;
+    
+ALTER TABLE Empleado_Pedidos
+    ADD    FOREIGN KEY (Codigo_pedido_Uno)
+    REFERENCES Pedidos(Codigo_pedido)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+;

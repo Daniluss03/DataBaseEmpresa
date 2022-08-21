@@ -1,0 +1,37 @@
+SELECT codigo, nombre, apellido, identificacion, correo, tipo_vehiculo, placa
+	FROM public.vehiculo WHERE codigo IN (30,70);
+
+SELECT codigo
+	FROM public.vehiculo where codigo between  30 and 70;
+
+SELECT COUNT  (nombre)
+ 	FROM public.clientes 
+	where nombre = 'Arnold';
+
+SELECT upper (nombre)
+	FROM public.clientes ;
+
+SELECT AVG (edad)
+	FROM public.clientes ;
+
+SELECT lower (nombre)
+	FROM public.clientes ;
+
+--Crear y probar función para sumar tres números.
+CREATE FUNCTION sumartresnumeros(int, int, int)
+RETURNS int AS $$
+DECLARE
+	a int;
+	b int;
+	c int;
+	resultado int;
+BEGIN
+	a:= $1;
+	b:= $2;
+	c:= $3;
+	resultado:= a+b+c;
+RETURN resultado;
+END;
+$$
+LANGUAGE plpgsql;
+

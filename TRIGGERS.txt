@@ -1,0 +1,37 @@
+
+
+DELETE from clientes where codigo = 3
+
+create or replace function insertar_trigger() returns trigger as $insertar$
+declare 
+begin
+insert into Auditoria values(old.id, old.nombre, old.apellido, old.correo, old.edad, old.sexo);
+return null;
+end;
+$insertar$
+language plpgsql;	
+
+
+create trigger insertar_Auditoria after delete
+on clientes for each row
+execute procedure insertar_trigger();	
+
+
+
+
+INSERT INTO public.empleado(
+	codigo_empleado, nombre, apellido, identificacion, correo, codigo, telefono, sexo)
+	VALUES (101, 'Marcos', 'gonzales', 21321324, 'marcos.jpe', 3213, 31341562, 'male');
+	
+create trigger diparar_al_insertar after insert
+on empleado for each row
+execute procedure insertar_trigger2();
+
+create or replace function insertar_trigger2() returns trigger as $inserta$
+declare 
+begin
+insert into auditoria_empleado values(new.codigo_empleado, new.nombre, new.apellido, new.identificacion, new.correo, new.codigo, new.telefono, new.sexo);
+return null;
+end;
+$inserta$
+language plpgsql	
